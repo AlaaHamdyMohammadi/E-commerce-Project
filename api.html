@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(300px, auto));
+      /* grid-template-columns: 1fr 1fr 1fr 1fr; */
+      gap: 0.5rem;
+      font-size: 20px;
+    }
+    .item{
+      padding: 10px;
+      background-color: #f1f1f1;
+      border-radius: 8px;
+      row-gap: 0.5rem;
+      color: #9b5c41;
+      font-size: 25px;
+      display: flex;
+      flex-direction: column-reverse;
+    }
+    .item:hover{
+      font-size: 30px;
+      color: hsl(18,41%,38%);
+      transition: 0.3s all linear;
+    }
+
+    img {
+      width: 60%;
+      margin: auto 20%;
+      display: block;
+      object-fit: contain;
+    }
+
+  </style>
+</head>
+
+<body>
+  <!-- <center>
+  <input type="text" id="p"> <button class="btn" onclick="getProductById()">search</button>
+  </center> -->
+  <div id="container"></div>
+  <script>
+    var divContainer = document.getElementById("container")
+
+    function getProducts() {
+
+      var xhr = new XMLHttpRequest()
+
+
+      xhr.open("get", "./furniture.json")
+
+
+      xhr.addEventListener("readystatechange", function () {
+
+        if (xhr.readyState == 4 && xhr.status == 200) {
+
+          var resDataJSON = xhr.response
+
+          var resData = JSON.parse(resDataJSON)
+
+          for (var i = 0; i < 32; i++) {
+
+            displayProd(resData[i])
+
+          }
+
+
+
+        }
+
+      })
+
+      xhr.send()
+
+    }
+    getProducts()
+
+    function getProductById() {
+      var input = document.getElementById("p")
+
+      var xhr = new XMLHttpRequest()
+      xhr.open("get", "https://mocki.io/v1/2748bb77-aa86-486b-964b-a594bd67a78f" + input.value)
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+
+          var resDataJSON = xhr.response
+          var response = JSON.parse(resDataJSON)
+          console.log(response);
+          displaysearchProd(response)
+        }
+      }
+      xhr.send()
+    }
+
+    function displayProd(p) {
+      let category = p.category
+      let price = p.price
+      let name = p.name
+      let thumbnail = p.thumbnail
+
+
+      var divPrd = document.createElement("div")
+      divPrd.innerHTML += category + "<br>"+ name + "<br>" + price + "<br>" + "<img src='" + thumbnail +
+        "'>"
+      divPrd.setAttribute("class", "item")
+      divContainer.append(divPrd)
+    }
+
+    // function displaysearchProd(p) {
+    //   let category = p.category
+    //   let price = p.price
+    //   let name = p.name
+    //   let thumbnail = p.thumbnail
+
+
+    //   var divPrd = document.createElement("div")
+    //   divPrd.innerHTML += category + "<br>"+ name + "<br>" + price + "<br>" + "<img src='" + thumbnail +
+    //     "'>"
+    //   divPrd.setAttribute("class", "item")
+    //   divContainer.append(divPrd)
+    // }
+
+  </script>
+</body>
+
+</html>
